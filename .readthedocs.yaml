@@ -3,7 +3,7 @@ build:
   image: "readthedocs/sphinx-build:latest"
   os: "ubuntu-20.04"  
   tools:
-    - sphinx
+    - sphinx: "latest"
 python:
   install:
     - method: pip
