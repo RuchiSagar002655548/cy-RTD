@@ -1,6 +1,7 @@
 version: 2
 build:
   image: "readthedocs/sphinx-build:latest"
+  os: "linux"
 python:
   install:
     - method: pip
