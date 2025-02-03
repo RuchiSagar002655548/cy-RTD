@@ -8,3 +8,4 @@ python:
   install:
     - method: pip
       extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
+    requirements: "requirements.txt"  # Add this line to specify the requirements file
