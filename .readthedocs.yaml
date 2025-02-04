@@ -9,10 +9,6 @@ python:
   install:
     - method: pip
       extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
-<<<<<<< HEAD
       requirements: requirements.txt
-  sphinx:
+sphinx:
   configuration: conf.py
-=======
-    - requirements: "requirements.txt"
->>>>>>> 225e6a4dddfa69507d635281a25bc590f4f368d2
