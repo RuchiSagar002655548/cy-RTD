@@ -1,19 +1,21 @@
+
+# Required
 version: 2
 
+# Set the version of Python and other tools you might need
 build:
-  os: ubuntu-24.04
+  os: ubuntu-22.04  # Specify the operating system
   tools:
-    python: "3.12"
+    python: "3.10"  # Specify the Python version
 
+# Build documentation with Sphinx
+sphinx:
+  configuration: conf.py
+
+# Define Python requirements
 python:
   install:
     - requirements: requirements.txt
 
-sphinx:
-  configuration: conf.py
-
-build:
-  commands:
-    - sphinx-build -b html -d $READTHEDOCS_OUTPUT/doctrees . $READTHEDOCS_OUTPUT/html
 
 
