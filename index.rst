@@ -1,10 +1,17 @@
-Welcome to My Test Documentation
-===============================
+Welcome to Sample Project's documentation!
+===========================================
 
-This is a test to check if Read The Docs can pull Python packages from CodeArtifact.
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-.. code-block:: python
+   main
 
-   import my-test-package
-   print(my-test-package)
+Module Documentation
+--------------------
+
+.. automodule:: main
+   :members:
+   :undoc-members:
+
  
