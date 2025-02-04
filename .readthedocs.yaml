@@ -8,4 +8,4 @@ python:
   install:
     - method: pip  # Tells RTD to use pip for installation
       extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
-    - requirements: "requirements.txt"  # Points RTD to your requirements.txt file
+    - requirements: "/path/to/your/requirements.txt"  # Point to the correct path of your requirements.txt
