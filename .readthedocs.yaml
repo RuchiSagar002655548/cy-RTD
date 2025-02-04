@@ -2,8 +2,10 @@ version: 2
 build:
   image: "readthedocs/sphinx-build:latest"
   os: "ubuntu-20.04"
+  commands:
+    - sphinx-build -b html -d _build/doctrees . _build/html  # Sphinx build command
 python:
   install:
-    - method: pip  # Use pip for installing dependencies
+    - method: pip
       extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
-    - requirements: "requirements.txt"  # Make sure the path to your requirements.txt is correct
+    - requirements: "requirements.txt"  # Path to requirements.txt
