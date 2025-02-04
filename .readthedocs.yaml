@@ -1,7 +1,9 @@
 version: 2
 
-tools:
-  python: "3.10"
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.10"
 
 python:
   install:
@@ -9,8 +11,4 @@ python:
 
 sphinx:
   configuration: conf.py
-
-build:
-  commands:
-    - sphinx-build -b html -d $READTHEDOCS_OUTPUT/doctrees . $READTHEDOCS_OUTPUT/html
 
