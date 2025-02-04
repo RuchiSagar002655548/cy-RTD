@@ -6,6 +6,6 @@ build:
     - sphinx-build -b html -d _build/doctrees . _build/html  # Sphinx build command
 python:
   install:
-    - method: pip
-      extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
-    - requirements: "requirements.txt"  # Correct reference to requirements.txt
+    requirements: "requirements.txt"  # Correctly reference the requirements.txt
+    extra_index_url: "https://581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/"
+
