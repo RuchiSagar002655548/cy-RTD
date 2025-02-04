@@ -1,14 +1,16 @@
-# conf.py
 import os
 import sys
 
 # Add the root directory of the project to the system path
 sys.path.insert(0, os.path.abspath("."))
 
+# Detect if we're on Read the Docs
+on_rtd = os.environ.get('READTHEDOCS') == 'True'
+
 # -- Project Information -----------------------------------------------------
 project = 'cy-RTD'
 author = 'RCH'
-release = '0.1'  # Version of the project (e.g., 0.1, 1.0.0)
+release = '0.1'
 
 # -- General Configuration ---------------------------------------------------
 extensions = [
@@ -18,7 +20,7 @@ extensions = [
     'sphinx.ext.intersphinx'     # Link to other projects' docs (optional)
 ]
 
-templates_path = ['_templates']   # Path to custom templates, if any
+templates_path = ['_templates']
 exclude_patterns = ['rtd-env/**', '**/*.dist-info/**', '**/site-packages/**']
 
 # -- Autodoc Options ---------------------------------------------------------
@@ -29,12 +31,14 @@ autodoc_default_options = {
 }
 
 # -- Options for HTML output -------------------------------------------------
-html_theme = 'sphinx_rtd_theme'          # You can change this to 'sphinx_rtd_theme' if preferred
+html_theme = 'sphinx_rtd_theme'
 
-# Handle output paths for both local and Read the Docs builds
-if os.environ.get('READTHEDOCS'):
-    # On Read the Docs, avoid specifying static paths if it's problematic
-    html_static_path = []  
+# Handle static paths for both local and RTD builds
+if on_rtd:
+    html_static_path = []  # Disable static files on Read the Docs to avoid errors
 else:
-    # Use 'static' directory for local builds
-    html_static_path = ['static']
+    html_static_path = ['static']  # Use the 'static' directory locally
+
+# Handle output paths for Read the Docs
+if on_rtd:
+    html_output_dir = os.environ.get('READTHEDOCS_OUTPUT', '_build/html')
