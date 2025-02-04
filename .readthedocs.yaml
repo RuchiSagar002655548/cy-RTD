@@ -8,14 +8,14 @@ build:
   tools:
     python: "3.10"  # Specify the Python version
 
-# Build documentation with Sphinx
-sphinx:
-  configuration: conf.py
-
 # Define Python requirements
 python:
   install:
     - requirements: requirements.txt
+
+# Build documentation with Sphinx
+sphinx:
+  configuration: conf.py
 
 
 
