@@ -17,7 +17,6 @@ extensions = [
     'sphinx.ext.autodoc',        # Automatically include docstrings
     'sphinx.ext.napoleon',       # For Google-style or NumPy-style docstrings
     'sphinx.ext.viewcode',       # Link to source code
-    'sphinx.ext.intersphinx'     # Link to other projects' docs (optional)
 ]
 
 templates_path = ['_templates']
@@ -33,8 +32,5 @@ autodoc_default_options = {
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'
 
-# Handle static paths for both local and RTD builds
-if on_rtd:
-    html_static_path = []  # Disable static files on Read the Docs to avoid errors
-else:
-    html_static_path = ['static']  # Use the 'static' directory locally
+# Handle static files depending on environment
+html_static_path = [] if on_rtd else ['static']
