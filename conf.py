@@ -23,8 +23,8 @@ exclude_patterns = []
 html_theme = 'sphinx_rtd_theme'
 
 # Remove static paths if they're causing errors
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
-if on_rtd:
-    html_static_path = []  # Disable static paths for Read the Docs
-else:
-    html_static_path = ['static']
+# on_rtd = os.environ.get('READTHEDOCS') == 'True'
+#if on_rtd:
+ #   html_static_path = []  # Disable static paths for Read the Docs
+#else:
+ #   html_static_path = ['static']
