@@ -30,4 +30,11 @@ autodoc_default_options = {
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'          # You can change this to 'sphinx_rtd_theme' if preferred
-html_static_path = ['_static']    # Static files such as images, CSS, etc.
+
+# Handle output paths for both local and Read the Docs builds
+if os.environ.get('READTHEDOCS'):
+    # On Read the Docs, avoid specifying static paths if it's problematic
+    html_static_path = []  
+else:
+    # Use 'static' directory for local builds
+    html_static_path = ['static']
