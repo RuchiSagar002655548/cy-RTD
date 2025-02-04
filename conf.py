@@ -38,7 +38,3 @@ if on_rtd:
     html_static_path = []  # Disable static files on Read the Docs to avoid errors
 else:
     html_static_path = ['static']  # Use the 'static' directory locally
-
-# Handle output paths for Read the Docs
-if on_rtd:
-    html_output_dir = os.environ.get('READTHEDOCS_OUTPUT', '_build/html')
