@@ -12,3 +12,8 @@ python:
 sphinx:
   configuration: conf.py
 
+build:
+  commands:
+    - sphinx-build -b html -d $READTHEDOCS_OUTPUT/doctrees . $READTHEDOCS_OUTPUT/html
+
+
