@@ -19,3 +19,5 @@ subprocess.run([
     '--trusted-host', codeartifact_url.split("/")[2],
     'my-test-package'
 ], check=True)
+
+subprocess.run(['pip', 'list'], check=True)
