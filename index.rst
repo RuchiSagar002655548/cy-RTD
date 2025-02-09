@@ -11,7 +11,7 @@ Main Script Documentation
 
 This section documents the main script functionality.
 
-.. automodule:: my_test_package.addition
+.. automodule:: addition
    :members:
    :undoc-members:
    :show-inheritance:
