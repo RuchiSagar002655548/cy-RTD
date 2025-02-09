@@ -4,6 +4,8 @@ import sys
 # Add the root directory of the project to the system path
 sys.path.insert(0, os.path.abspath("."))
 
+sys.path.insert(0, os.path.abspath("./my_test_package"))
+
 # Detect if the build is happening on Read the Docs
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
