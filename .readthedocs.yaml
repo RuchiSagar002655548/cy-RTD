@@ -24,7 +24,7 @@ build:
 
       # Set the PIP_EXTRA_INDEX_URL environment variable
       codeartifact_url = os.getenv('CODEARTIFACT_URL')
-      extra_index_url = codeartifact_url + ':' + codeartifact_token
+      extra_index_url = codeartifact_url + ":" + codeartifact_token
       print(extra_index_url)
 
 
