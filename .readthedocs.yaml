@@ -9,7 +9,7 @@ build:
   commands:
     - pip install -r requirements.txt
     - |
-      python -c """
+      python -c "
       import boto3
       import os
       import subprocess
@@ -21,10 +21,12 @@ build:
           domainOwner='581351078906'
       )
       codeartifact_token = token_response['authorizationToken']
+      print(codeartifact_token)
 
       # Set the PIP_EXTRA_INDEX_URL environment variable
       codeartifact_url = os.getenv('CODEARTIFACT_URL')
-      extra_index_url = codeartifact_url + ":" + codeartifact_token
+      print(codeartifact_url)
+      extra_index_url = codeartifact_url + ':' + codeartifact_token
       print(extra_index_url)
 
 
@@ -38,7 +40,7 @@ build:
 
       # Execute the pip install command
       subprocess.run(pip_command, check=True)
-      """
+      "
 
 # Build documentation with Sphinx
 sphinx:
