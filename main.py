@@ -1,4 +1,4 @@
-import addition 
+from my_test_package import addition 
 
 c = addition.add(4,5)
 print(c)
