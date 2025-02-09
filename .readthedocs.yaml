@@ -9,23 +9,30 @@ build:
   commands:
     - pip install -r requirements.txt
     - |
-    python -c "
-    import boto3
-    import os
+      python -c "
+      import boto3
+      import os
+      import subprocess
 
-    # Retrieve AWS CodeArtifact token dynamically
-    client = boto3.client('codeartifact', region_name=os.getenv('AWS_REGION', 'us-east-1'))
-    token_response = client.get_authorization_token(
-        domain='cellarity-test',
-        domainOwner='581351078906'
-    )
-    codeartifact_token = token_response['authorizationToken']
+      # Retrieve AWS CodeArtifact token dynamically
+      client = boto3.client('codeartifact', region_name=os.getenv('AWS_REGION', 'us-east-1'))
+      token_response = client.get_authorization_token(
+          domain='cellarity-test',
+          domainOwner='581351078906'
+      )
+      codeartifact_token = token_response['authorizationToken']
 
-    # Set the PIP_EXTRA_INDEX_URL environment variable
-    os.environ['PIP_EXTRA_INDEX_URL'] = f\"{os.getenv('CODEARTIFACT_URL')}:{codeartifact_token}\"
-    "
+      # Set the PIP_EXTRA_INDEX_URL environment variable
+      codeartifact_url = os.getenv('CODEARTIFACT_URL')
 
-    - pip install --extra-index-url $PIP_EXTRA_INDEX_URL --trusted-host $(echo $CODEARTIFACT_URL | cut -d/ -f3) -r requirements.txt
+      # Install packages from requirements.txt
+      subprocess.run([
+          'pip', 'install',
+          '--extra-index-url', f'{codeartifact_url}:{codeartifact_token}',
+          '--trusted-host', codeartifact_url.split('/')[2],
+          '-r', 'requirements.txt'
+      ])
+      "
 
 # Build documentation with Sphinx
 sphinx:
