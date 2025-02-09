@@ -5,13 +5,14 @@ Welcome to Sample Project's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   my_test_package
 
 Main Script Documentation
 -------------------------
 
 This section documents the main script functionality.
 
-.. automodule:: my_test_package
+.. automodule:: my_test_package.addition
    :members:
    :undoc-members:
    :show-inheritance:
