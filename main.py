@@ -1,6 +1,7 @@
 from my_test_package.addition import add
 
-print(add(4,5))
+c = add(4,5)
+print(c)
 
 def greet(name: str) -> str:
     """
