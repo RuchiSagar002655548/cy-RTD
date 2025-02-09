@@ -1,23 +1,27 @@
 
 import boto3
-import os
 import subprocess
 
-# Retrieve AWS CodeArtifact token dynamically
-client = boto3.client('codeartifact', region_name=os.getenv('AWS_REGION', 'us-east-1'))
-token_response = client.get_authorization_token(
-    domain='cellarity-test',
-    domainOwner='581351078906'
-)
-codeartifact_token = token_response['authorizationToken']
+# Set CodeArtifact details
+domain = 'cellarity-test'
+domain_owner = '581351078906'
+repository = 'python'
+region = 'us-east-1'
 
-# Set PIP_EXTRA_INDEX_URL and install packages
-codeartifact_url = os.getenv('CODEARTIFACT_URL')
+# Retrieve the authorization token
+client = boto3.client('codeartifact', region_name=region)
+token_response = client.get_authorization_token(domain=domain, domainOwner=domain_owner)
+token = token_response['authorizationToken']
+
+# Construct the package URL
+repository_url = f"https://{domain}-{domain_owner}.d.codeartifact.{region}.amazonaws.com/pypi/{repository}/simple/"
+trusted_host = repository_url.split('/')[2]
+
+# Install the package from CodeArtifact
 subprocess.run([
     'pip', 'install',
-    f'--extra-index-url={codeartifact_url}:{codeartifact_token}',
-    '--trusted-host', codeartifact_url.split("/")[2],
-    'my-test-package'
+    '--extra-index-url', f"{repository_url}:{token}",
+    '--trusted-host', trusted_host,
+    'my_test_package'
 ], check=True)
 
-subprocess.run(['pip', 'list'], check=True)
