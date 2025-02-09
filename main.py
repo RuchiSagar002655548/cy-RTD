@@ -1,4 +1,6 @@
+from my_test_package.sample_module import say_hello
 
+print(say_hello())
 
 def greet(name: str) -> str:
     """
