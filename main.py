@@ -1,6 +1,4 @@
-from my_test_package.sample_module import say_hello
 
-print(say_hello())  # Output: Hello from the test package!
 
 def greet(name: str) -> str:
     """
