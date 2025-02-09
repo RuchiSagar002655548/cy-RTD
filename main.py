@@ -1,6 +1,6 @@
-from my_test_package import addition 
+from my_test_package.addition import add 
 
-c = addition.add(4,5)
+c = add(4,5)
 print(c)
 
 def greet(name: str) -> str:
