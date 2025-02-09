@@ -6,12 +6,26 @@ Welcome to Sample Project's documentation!
    :caption: Contents:
 
    main
+   my_test_package
 
-Module Documentation
---------------------
+Main Script Documentation
+-------------------------
+
+This section documents the main script functionality.
 
 .. automodule:: main
    :members:
    :undoc-members:
+   :show-inheritance:
+
+Package Documentation
+---------------------
+
+This section documents the custom Python package and its modules.
+
+.. automodule:: my_test_package.sample_module
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
  
