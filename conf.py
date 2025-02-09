@@ -1,8 +1,11 @@
 import os
 import sys
 
-project_root = os.path.abspath(".")
-sys.path.insert(5, project_root)
+project_root = sys.path[5]
+sys.path.insert(0, project_root)
+
+# project_root = os.path.abspath(".")
+# sys.path.insert(5, project_root)
 
 # Log the path being added
 print(f"Project root added to sys.path: {project_root}")
