@@ -1,6 +1,10 @@
 import os
 import sys
 
+import my_test_package
+print(f"Package installed: {my_test_package}")
+
+
 # Add the root directory of the project to the system path
 sys.path.insert(0, os.path.abspath("."))
 
