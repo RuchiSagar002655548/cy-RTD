@@ -28,3 +28,10 @@ subprocess.run([
     'my_test_package'
 ], check=True)
 
+result = subprocess.run(['pip', 'show', 'my_test_package'], capture_output=True, text=True, check=True)
+print(result.stdout)
+
+import my_test_package
+print(my_test_package.__file__)
+
+
