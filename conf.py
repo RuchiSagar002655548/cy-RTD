@@ -1,12 +1,14 @@
 import os
 import sys
 
-import my_test_package
-print(f"Package installed: {my_test_package}")
+project_root = os.path.abspath(".")
+sys.path.insert(0, project_root)
 
+# Log the path being added
+print(f"Project root added to sys.path: {project_root}")
 
-# Add the root directory of the project to the system path
-sys.path.insert(0, os.path.abspath("."))
+# Log the entire sys.path to verify
+print("Current sys.path:", sys.path)
 
 # Detect if the build is happening on Read the Docs
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
