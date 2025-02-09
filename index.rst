@@ -12,7 +12,7 @@ Main Script Documentation
 
 This section documents the main script functionality.
 
-.. automodule:: main
+.. automodule:: my_test_package.sample_module
    :members:
    :undoc-members:
    :show-inheritance:
