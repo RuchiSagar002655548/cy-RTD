@@ -17,5 +17,5 @@ subprocess.run([
     'pip', 'install',
     f'--extra-index-url={codeartifact_url}:{codeartifact_token}',
     '--trusted-host', codeartifact_url.split("/")[2],
-    'my_test_package'
+    'my-test-package'
 ], check=True)
