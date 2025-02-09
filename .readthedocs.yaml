@@ -25,14 +25,16 @@ build:
       # Set the PIP_EXTRA_INDEX_URL environment variable
       codeartifact_url = os.getenv('CODEARTIFACT_URL')
 
-      # Install packages from requirements.txt
-      subprocess.run([
-      'pip', 'install',
-      f'--extra-index-url={codeartifact_url}:{codeartifact_token}',
-      '--trusted-host', codeartifact_url.split('/')[2],
-      '-r', 'requirements.txt'
-      ])
-      "
+      # Construct the command arguments properly
+      pip_command = [
+          'pip', 'install',
+          f'--extra-index-url={codeartifact_url}:{codeartifact_token}',
+          '--trusted-host', codeartifact_url.split('/')[2],
+          '-r', 'requirements.txt'
+      ]
+
+      # Execute the pip install command
+      subprocess.run(pip_command, check=True)
 
 # Build documentation with Sphinx
 sphinx:
