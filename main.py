@@ -1,4 +1,4 @@
-from my_test_package.sample_module import say_hello
+from my-test-package.sample_module import say_hello
 
 print(say_hello())
 
