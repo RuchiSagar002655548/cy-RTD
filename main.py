@@ -1,6 +1,6 @@
-from my_test_package.my_test_package.sample_module import say_hello
+from my_test_package.addition import add
 
-print(say_hello())
+print(add(4,5))
 
 def greet(name: str) -> str:
     """
