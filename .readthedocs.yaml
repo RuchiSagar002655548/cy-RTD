@@ -9,7 +9,7 @@ build:
   commands:
     - pip install -r requirements.txt
     - |
-      python -c "
+      python -c """
       import boto3
       import os
       import subprocess
@@ -37,7 +37,8 @@ build:
       ]
 
       # Execute the pip install command
-      subprocess.run(pip_command, check=True)"
+      subprocess.run(pip_command, check=True)
+      """
 
 # Build documentation with Sphinx
 sphinx:
