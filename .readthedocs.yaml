@@ -28,7 +28,7 @@ build:
       # Construct the command arguments properly
       pip_command = [
           'pip', 'install',
-          f'--extra-index-url={codeartifact_url}:{codeartifact_token}',
+          '--extra-index-url=codeartifact_url:codeartifact_token',
           '--trusted-host', codeartifact_url.split('/')[2],
           '-r', 'requirements.txt'
       ]
