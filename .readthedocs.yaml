@@ -12,12 +12,6 @@ build:
 python:
   install:
     - requirements: requirements.txt
-
-# Build documentation with Sphinx
-sphinx:
-  configuration: conf.py
-
-post_install:
   - pip install boto3  # Install boto3 to interact with AWS services
   - |
     python -c "
@@ -37,5 +31,7 @@ post_install:
     "
   - pip install --extra-index-url $PIP_EXTRA_INDEX_URL --trusted-host $(echo $CODEARTIFACT_URL | cut -d/ -f3) -r requirements.txt
 
-
+# Build documentation with Sphinx
+sphinx:
+  configuration: conf.py
 
