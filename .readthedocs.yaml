@@ -6,10 +6,14 @@ build:
   os: ubuntu-22.04  # Specify the operating system
   tools:
     python: "3.10"  # Specify the Python version
-  commands:
-    - pip install -r requirements.txt
-    - python -c 'import boto3, os, subprocess; client = boto3.client("codeartifact", region_name=os.getenv("AWS_REGION", "us-east-1")); token_response = client.get_authorization_token(domain="cellarity-test", domainOwner="581351078906"); codeartifact_token = token_response["authorizationToken"]; codeartifact_url = os.getenv("CODEARTIFACT_URL"); extra_index_url = codeartifact_url + ":" + codeartifact_token; print("Extra Index URL:", extra_index_url); subprocess.run(["pip", "install", "--extra-index-url=" + extra_index_url, "--trusted-host", codeartifact_url.split("/")[2], "-r", "requirements.txt"], check=True)'
-
+  jobs:
+    post_install:
+      - python get_codeartifact_token.py
+      
+python:
+  install:
+    - requirements: requirements.txt
+    
 # Build documentation with Sphinx
 sphinx:
   configuration: conf.py
