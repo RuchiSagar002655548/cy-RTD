@@ -5,7 +5,6 @@ Welcome to Sample Project's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules
 
 Main Script Documentation
 -------------------------
