@@ -1,7 +1,5 @@
 from my_test_package.sample_module import say_hello
 
-print(say_hello())  # Output: Hello from the test package!
-
 
 def greet(name: str) -> str:
     """
@@ -12,17 +10,17 @@ def greet(name: str) -> str:
     """
     return f"Hello, {name}!"
 
-class Calculator:
-    """
-    A simple calculator class.
-    """
 
-    def add(self, a: int, b: int) -> int:
-        """
-        Add two numbers.
+def add(self, a: int, b: int) -> int:
+    """
+    Add two numbers.
 
-        :param a: First number.
-        :param b: Second number.
-        :return: Sum of the numbers.
-        """
-        return a + b
+    :param a: First number.
+    :param b: Second number.
+    :return: Sum of the numbers.
+    """
+    return a + b
+
+if __name__ == "main":
+    print(say_hello())  # Output: Hello from the test package!
+    
