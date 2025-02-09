@@ -3,4 +3,5 @@ sphinx_rtd_theme==1.1.1
 sphinx-notfound-page==1.0.2
 flask
 my-test-package==0.1.0
+boto3
 
