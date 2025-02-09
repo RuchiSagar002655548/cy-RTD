@@ -11,7 +11,6 @@ build:
 python:
   install:
     - requirements: requirements.txt
-    - pip install boto3  # Install boto3 to interact with AWS services
 
 # Run custom commands after installing basic requirements
 commands:
