@@ -16,6 +16,7 @@ token = token_response['authorizationToken']
 # Construct the package URL
 repository_url = f"https://{domain}-{domain_owner}.d.codeartifact.{region}.amazonaws.com/pypi/{repository}/simple/"
 trusted_host = repository_url.split('/')[2]
+print(trusted_host)
 
 pip_index_url = f"{repository_url}:{token}"
 print(pip_index_url)
