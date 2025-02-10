@@ -25,7 +25,7 @@ subprocess.run([
     'pip', 'install',
     '--extra-index-url', f"{repository_url}:{token}",
     '--trusted-host', trusted_host,
-    'my_test_package'
+    'my_test_package == 0.1.0'
 ], check=True)
 
 result = subprocess.run(['pip', 'show', 'my_test_package'], capture_output=True, text=True, check=True)
