@@ -43,8 +43,8 @@ if not on_rtd:
 
 # Add custom packages to sys.path for testing (if needed)
 
-custom_package_dir = os.getenv('CUSTOM_PACKAGE_PATH', None)
-if custom_package_dir:
-    sys.path.insert(0, custom_package_dir)
+#custom_package_dir = os.getenv('CUSTOM_PACKAGE_PATH', None)
+#if custom_package_dir:
+ #   sys.path.insert(0, custom_package_dir)
 
 
