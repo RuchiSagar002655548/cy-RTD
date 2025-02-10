@@ -31,6 +31,8 @@ subprocess.run([
 result = subprocess.run(['pip', 'show', 'my_test_package'], capture_output=True, text=True, check=True)
 print(result.stdout)
 
+print(subprocess.run(['pip', 'list']))
+
 import my_test_package
 print(my_test_package.__file__)
 print(open(my_test_package.__file__).read())
