@@ -14,7 +14,7 @@ token_response = client.get_authorization_token(domain=domain, domainOwner=domai
 token = token_response['authorizationToken']
 
 # Construct the package URL
-repository_url = f"https://{domain}-{domain_owner}.d.codeartifact.{region}.amazonaws.com/pypi/{repository}/simple/"
+repository_url = f"https://aws:{token}@{domain}-{domain_owner}.d.codeartifact.{region}.amazonaws.com/pypi/{repository}/simple/"
 trusted_host = repository_url.split('/')[2]
 print(trusted_host)
 
