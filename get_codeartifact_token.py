@@ -28,7 +28,7 @@ subprocess.run([
     'custom_py_package == 0.1.0'
 ], check=True)
 
-result = subprocess.run(['pip', 'show', 'my_test_package'], capture_output=True, text=True, check=True)
+result = subprocess.run(['pip', 'show', 'custom_py_package'], capture_output=True, text=True, check=True)
 print(result.stdout)
 
 print(subprocess.run(['pip', 'list']))
