@@ -25,7 +25,7 @@ subprocess.run([
     'pip', 'install',
     '--extra-index-url', f"{repository_url}:{token}",
     '--trusted-host', trusted_host,
-    'my_test_package == 0.1.0'
+    'custom_py_package == 0.1.0'
 ], check=True)
 
 result = subprocess.run(['pip', 'show', 'my_test_package'], capture_output=True, text=True, check=True)
@@ -33,8 +33,8 @@ print(result.stdout)
 
 print(subprocess.run(['pip', 'list']))
 
-import my_test_package
-print(my_test_package.__file__)
-print(open(my_test_package.__file__).read())
+import custom_py_package
+print(custom_py_package.__file__)
+print(open(custom_py_package.__file__).read())
 
 
