@@ -8,13 +8,13 @@ build:
     python: "3.10"  # Specify the Python version
   jobs:
     post_install:
+      - pip cache purge
       - python get_codeartifact_token.py
-      
-      
+          
 python:
   install:
-    - pip cache purge
     - requirements: requirements.txt
+    - pip install --no-cache-dir -r requirements.txt
     
 # Build documentation with Sphinx
 sphinx:
