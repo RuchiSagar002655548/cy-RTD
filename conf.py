@@ -3,7 +3,7 @@ import sys
 
 project_root = sys.path[4]
 package_path = os.path.join(project_root, 'my_test_package')
-sys.path.insert(0, project_root)
+sys.path.insert(0, package_path)
 
 # project_root = os.path.abspath(".")
 # sys.path.insert(5, project_root)
