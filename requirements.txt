@@ -1,4 +1,4 @@
 boto3
 sphinx_rtd_theme
 sphinx
-custom_py_package==0.1.0
+custom_py_package
