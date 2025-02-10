@@ -1,4 +1,3 @@
 boto3
 sphinx_rtd_theme
 sphinx
-custom_py_package
