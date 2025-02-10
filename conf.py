@@ -9,7 +9,7 @@ sys.path.insert(0, package_path)
 # sys.path.insert(5, project_root)
 
 # Log the path being added
-print(f"Project root added to sys.path: {project_root}")
+print(f"Project root added to sys.path: {package_path}")
 
 # Log the entire sys.path to verify
 print("Current sys.path:", sys.path)
