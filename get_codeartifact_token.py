@@ -33,5 +33,6 @@ print(result.stdout)
 
 import my_test_package
 print(my_test_package.__file__)
+print(open(my_test_package.__file__).read())
 
 
