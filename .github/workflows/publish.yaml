@@ -39,11 +39,17 @@ jobs:
         run: python -m build
 
       - name: Publish Package to AWS CodeArtifact
-        env:
-          CODEARTIFACT_AUTH_TOKEN: ${{ secrets.CODEARTIFACT_AUTH_TOKEN }}
         run: |
-          # Fetch the repository endpoint
-          REPOSITORY_URL=$(aws codeartifact get-repository-endpoint \
+          # Fetch a fresh AWS CodeArtifact authentication token
+          export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
+            --domain cellarity-test \
+            --domain-owner 581351078906 \
+            --region us-east-1 \
+            --query authorizationToken \
+            --output text)
+
+          # Fetch the repository endpoint dynamically
+          export REPOSITORY_URL=$(aws codeartifact get-repository-endpoint \
             --domain cellarity-test \
             --domain-owner 581351078906 \
             --repository python \
@@ -51,8 +57,11 @@ jobs:
             --query repositoryEndpoint \
             --output text)
 
+          echo "Using CodeArtifact Repository URL: $REPOSITORY_URL"
+
           # Upload the package using Twine
           twine upload --repository-url $REPOSITORY_URL \
             -u aws \
             -p $CODEARTIFACT_AUTH_TOKEN \
             dist/*
+
