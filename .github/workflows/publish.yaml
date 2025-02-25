@@ -23,26 +23,40 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::581351078906:role/GitHubActions_OIDC_role  # Update with your IAM role
           aws-region: us-east-1
+          role-session-name: publish-python-package
 
-      - name: Fetch AWS CodeArtifact Token
+      - name: Login to AWS CodeArtifact (twine)
         run: |
-          export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain cellarity-test --domain-owner 581351078906 --query authorizationToken --output text --region us-east-1)
-          echo "CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN}" >> $GITHUB_ENV
+          aws codeartifact login \
+            --tool twine \
+            --repository python \
+            --domain cellarity-test \
+            --domain-owner 581351078906 \
+            --region us-east-1
 
-      - name: Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Login to AWS CodeArtifact (pip)
+        run: |
+          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
+            --domain cellarity-test \
+            --domain-owner 581351078906 \
+            --region us-east-1 \
+            --query authorizationToken \
+            --output text)
+          
+          pip config set global.extra-index-url \
+            https://aws:$CODEARTIFACT_AUTH_TOKEN@cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/
 
       - name: Install Build Dependencies
-        run: pip install --upgrade pip setuptools wheel twine
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade setuptools wheel build
 
-      - name: Build the Package
-        run: python setup.py sdist bdist_wheel
+      - name: Build Python Package
+        run: python -m build
+
+      - name: List Package Files
+        run: ls -lh dist/
 
       - name: Upload Package to AWS CodeArtifact
         run: |
-          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ \
-          -u aws \
-          -p ${CODEARTIFACT_AUTH_TOKEN} \
-          dist/*
+          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ dist/*
