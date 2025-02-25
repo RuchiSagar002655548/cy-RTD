@@ -1,12 +1,13 @@
 import os
 import sys
 
-project_root = sys.path[4]
-package_path = os.path.join(project_root, 'custom_py_package')
-sys.path.insert(0, package_path)
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, project_root)
 
-# project_root = os.path.abspath(".")
-# sys.path.insert(5, project_root)
+package_path = os.path.abspath(os.path.join(project_root, "custom_py_package"))
+if os.path.exists(package_path):
+    sys.path.insert(0, package_path)
+
 
 # Log the path being added
 print(f"Project root added to sys.path: {package_path}")
@@ -15,7 +16,7 @@ print(f"Project root added to sys.path: {package_path}")
 print("Current sys.path:", sys.path)
 
 # Detect if the build is happening on Read the Docs
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
+on_rtd = os.getenv('READTHEDOCS', 'False').lower() == 'true'
 
 # -- Project Information --
 project = 'cy-RTD'
@@ -40,11 +41,5 @@ html_static_path = [] if on_rtd else ['static']
 
 if not on_rtd:
     print("Running locally. Make sure CODEARTIFACT_URL and AWS credentials are set.")
-
-# Add custom packages to sys.path for testing (if needed)
-
-#custom_package_dir = os.getenv('CUSTOM_PACKAGE_PATH', None)
-#if custom_package_dir:
- #   sys.path.insert(0, custom_package_dir)
 
 

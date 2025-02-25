@@ -1,0 +1,48 @@
+name: Publish Python Package to AWS CodeArtifact
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to the main branch
+  workflow_dispatch:  # Allows manual triggering
+
+permissions:
+  id-token: write  # Required for OIDC authentication
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3  # Pulls the latest repository code
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::581351078906:role/GitHubActions_OIDC_role  # Update with your IAM role
+          aws-region: us-east-1
+
+      - name: Fetch AWS CodeArtifact Token
+        run: |
+          export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain cellarity-test --domain-owner 581351078906 --query authorizationToken --output text --region us-east-1)
+          echo "CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN}" >> $GITHUB_ENV
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Build Dependencies
+        run: pip install --upgrade pip setuptools wheel twine
+
+      - name: Build the Package
+        run: python setup.py sdist bdist_wheel
+
+      - name: Upload Package to AWS CodeArtifact
+        run: |
+          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ \
+          -u aws \
+          -p ${CODEARTIFACT_AUTH_TOKEN} \
+          dist/*
