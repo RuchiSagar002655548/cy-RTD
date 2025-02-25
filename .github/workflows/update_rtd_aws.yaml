@@ -28,4 +28,4 @@ jobs:
       - name: Run Update Script
         env:
           RTD_API_TOKEN: ${{ secrets.RTD_API_TOKEN }}
-        run: python scripts/update_rtd_aws_keys.py
+        run: python_scripts/update_rtd_aws_keys.py
