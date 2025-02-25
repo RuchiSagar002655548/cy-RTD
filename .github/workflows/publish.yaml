@@ -26,26 +26,17 @@ jobs:
           role-session-name: publish-python-package
 
       - name: Get CodeArtifact Repository URL
+        id: get-repo-url
         run: |
-          export CODEARTIFACT_REPO_URL=$(aws codeartifact get-repository-endpoint \
+          repo_url=$(aws codeartifact get-repository-endpoint \
             --domain cellarity-test \
             --domain-owner 581351078906 \
             --repository python \
             --format pypi \
-            --region us-east-1)
-          echo "CODEARTIFACT_REPO_URL=$CODEARTIFACT_REPO_URL" >> $GITHUB_ENV
-
-      - name: Login to AWS CodeArtifact (pip)
-        run: |
-          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
-            --domain cellarity-test \
-            --domain-owner 581351078906 \
             --region us-east-1 \
-            --query authorizationToken \
+            --query repositoryEndpoint \
             --output text)
-          
-          pip config set global.extra-index-url \
-            https://aws:$CODEARTIFACT_AUTH_TOKEN@cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/
+          echo "CODEARTIFACT_REPO_URL=$repo_url" >> $GITHUB_ENV
 
       - name: Install Build Dependencies
         run: |
@@ -62,14 +53,10 @@ jobs:
         run: ls -lh dist/
 
       - name: Upload Package to AWS CodeArtifact
+        env:
+          CODEARTIFACT_AUTH_TOKEN: ${{ secrets.CODEARTIFACT_AUTH_TOKEN }}
+          CODEARTIFACT_REPO_URL: ${{ env.CODEARTIFACT_REPO_URL }}
         run: |
-          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
-            --domain cellarity-test \
-            --domain-owner 581351078906 \
-            --region us-east-1 \
-            --query authorizationToken \
-            --output text)
-
           twine upload --repository-url $CODEARTIFACT_REPO_URL \
             -u aws \
             -p $CODEARTIFACT_AUTH_TOKEN \
