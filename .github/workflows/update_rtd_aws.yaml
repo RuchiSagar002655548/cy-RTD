@@ -9,7 +9,7 @@ jobs:
   rotate-aws-keys:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # Required for OIDC
+      id-token: write  # Required for OIDC authentication
       contents: read
 
     steps:
@@ -19,8 +19,8 @@ jobs:
       - name: Configure AWS Credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::Y581351078906:role/GitHubActions_OIDC_role
-          aws-region: us-east-1  # Change to your AWS region
+          role-to-assume: arn:aws:iam::581351078906:role/GitHubActions_OIDC_role
+          aws-region: us-east-1
 
       - name: Install Dependencies
         run: pip install requests boto3
