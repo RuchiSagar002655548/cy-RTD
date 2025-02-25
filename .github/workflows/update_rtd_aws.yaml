@@ -16,6 +16,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Verify Repository Structure  # Debugging step to check files
+        run: ls -lahR  
+
       - name: Configure AWS Credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -24,6 +27,9 @@ jobs:
 
       - name: Install Dependencies
         run: pip install requests boto3
+
+      - name: Grant Execute Permissions to Python Script
+        run: chmod +x python_scripts/update_rtd_aws_keys.py 
 
       - name: Run Update Script
         env:
