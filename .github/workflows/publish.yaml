@@ -25,14 +25,15 @@ jobs:
           aws-region: us-east-1
           role-session-name: publish-python-package
 
-      - name: Login to AWS CodeArtifact (twine)
+      - name: Get CodeArtifact Repository URL
         run: |
-          aws codeartifact login \
-            --tool twine \
-            --repository python \
+          export CODEARTIFACT_REPO_URL=$(aws codeartifact get-repository-endpoint \
             --domain cellarity-test \
             --domain-owner 581351078906 \
-            --region us-east-1
+            --repository python \
+            --format pypi \
+            --region us-east-1)
+          echo "CODEARTIFACT_REPO_URL=$CODEARTIFACT_REPO_URL" >> $GITHUB_ENV
 
       - name: Login to AWS CodeArtifact (pip)
         run: |
@@ -56,7 +57,6 @@ jobs:
 
       - name: Install Twine
         run: pip install --upgrade twine
-  
 
       - name: List Package Files
         run: ls -lh dist/
@@ -70,9 +70,7 @@ jobs:
             --query authorizationToken \
             --output text)
 
-          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ \
+          twine upload --repository-url $CODEARTIFACT_REPO_URL \
             -u aws \
             -p $CODEARTIFACT_AUTH_TOKEN \
-            dist/*  
-
-      
+            dist/*
