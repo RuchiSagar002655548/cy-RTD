@@ -4,7 +4,7 @@ import os
 import boto3
 
 # List of RTD projects (For testing, we only have one project: "cy-rtd")
-RTD_PROJECTS = ["cy-rtd"]
+RTD_PROJECTS = ["cy-rtd", "cy-rtd-org"]
 
 # RTD API Headers (Ensure `RTD_API_TOKEN` is set in GitHub Secrets)
 RTD_API_TOKEN = os.getenv("RTD_API_TOKEN")
@@ -46,7 +46,7 @@ def fetch_new_aws_keys():
             print(f"Deleting oldest AWS Access Key: {oldest_key['AccessKeyId']}...")
             iam.delete_access_key(UserName="codeartifact-rtd", AccessKeyId=oldest_key["AccessKeyId"])
             print(f"Successfully deleted old key: {oldest_key['AccessKeyId']}")
-            
+
         print("Creating new AWS Access Key for codeartifact-rtd...")
         new_key = iam.create_access_key(UserName="codeartifact-rtd")["AccessKey"]
 
@@ -127,16 +127,15 @@ def update_rtd_aws_keys():
             print(f"Skipping {project} due to API error.")
             continue
 
-        # Delete existing AWS keys in RTD
-        for var in existing_vars["results"]:
-            if var["name"] in aws_keys:
-                print(f"Deleting {var['name']} from {project}...")
-                delete_env_variable(project, var["pk"])  # RTD API uses "pk" instead of "id"
+        existing_var_names = {var["name"]: var["pk"] for var in existing_vars["results"]}
 
-        # Add new AWS keys to RTD
+        # Ensure all necessary AWS keys exist
         for name, value in aws_keys.items():
-            print(f"Adding {name} to {project}...")
-            add_env_variable(project, name, value)
+            if name in existing_var_names:
+                print(f"{name} already exists in {project}, skipping creation.")
+            else:
+                print(f"Adding missing variable {name} to {project}...")
+                add_env_variable(project, name, value)
 
         print(f"RTD AWS credentials updated for {project}!\n")
 
