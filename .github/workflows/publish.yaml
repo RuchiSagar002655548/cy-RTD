@@ -54,6 +54,10 @@ jobs:
       - name: Build Python Package
         run: python -m build
 
+      - name: Install Twine
+        run: pip install --upgrade twine
+  
+
       - name: List Package Files
         run: ls -lh dist/
 

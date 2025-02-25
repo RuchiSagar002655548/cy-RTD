@@ -6,24 +6,18 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
+  jobs:
+    pre_install:
+      - pip install --upgrade pip setuptools wheel
+      - CODEARTIFACT_AUTH_TOKEN=$(python get_codeartifact_token.py)  # ✅ Fetch token
+      - pip config set global.extra-index-url https://aws:$CODEARTIFACT_AUTH_TOKEN@cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/
 
-# Specify Sphinx configuration file location
-sphinx:
-  configuration: conf.py  # ✅ Your conf.py is at the root, not inside `docs/`
-
-# Define Python package installation
 python:
   install:
     - method: pip
       path: .
       extra_requirements:
-        - doc  # ✅ Ensure `doc` dependencies are installed if needed
+        - doc
 
-  # Run AWS CodeArtifact authentication before installing dependencies
-  jobs:
-    post_install:
-      - pip cache purge
-      - python get_codeartifact_token.py  # ✅ Authenticates with AWS CodeArtifact
-      - pip install --upgrade pip setuptools wheel  # ✅ Upgrades build tools
-      - pip install --extra-index-url https://aws:$CODEARTIFACT_AUTH_TOKEN@cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/ -r requirements.txt  # ✅ Installs dependencies from AWS CodeArtifact
-
+sphinx:
+  configuration: conf.py
