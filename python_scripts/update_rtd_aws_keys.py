@@ -37,6 +37,16 @@ def fetch_new_aws_keys():
         # Create an IAM client with the retrieved credentials
         iam = boto3.client("iam")
 
+        # List all existing access keys
+        existing_keys = iam.list_access_keys(UserName="codeartifact-rtd")["AccessKeyMetadata"
+                                                                          ]
+        # If 2 keys exist, delete the oldest one
+        if len(existing_keys) >= 2:
+            oldest_key = sorted(existing_keys, key=lambda k: k["CreateDate"])[0]  # Find oldest key
+            print(f"Deleting oldest AWS Access Key: {oldest_key['AccessKeyId']}...")
+            iam.delete_access_key(UserName="codeartifact-rtd", AccessKeyId=oldest_key["AccessKeyId"])
+            print(f"Successfully deleted old key: {oldest_key['AccessKeyId']}")
+            
         print("Creating new AWS Access Key for codeartifact-rtd...")
         new_key = iam.create_access_key(UserName="codeartifact-rtd")["AccessKey"]
 
