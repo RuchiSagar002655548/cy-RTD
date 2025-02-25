@@ -63,4 +63,16 @@ jobs:
 
       - name: Upload Package to AWS CodeArtifact
         run: |
-          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ dist/*
+          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
+            --domain cellarity-test \
+            --domain-owner 581351078906 \
+            --region us-east-1 \
+            --query authorizationToken \
+            --output text)
+
+          twine upload --repository-url https://cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/ \
+            -u aws \
+            -p $CODEARTIFACT_AUTH_TOKEN \
+            dist/*  
+
+      
