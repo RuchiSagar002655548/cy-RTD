@@ -10,14 +10,14 @@ build:
     pre_install:
       - pip install --upgrade pip setuptools wheel
       - pip install boto3
-      - CODEARTIFACT_AUTH_TOKEN=$(python get_codeartifact_token.py)  # ✅ Fetch token
+      - CODEARTIFACT_AUTH_TOKEN=$(python get_codeartifact_token.py)  #  Fetch token
       - pip config set global.extra-index-url https://aws:$CODEARTIFACT_AUTH_TOKEN@cellarity-test-581351078906.d.codeartifact.us-east-1.amazonaws.com/pypi/python/simple/
 
 python:
   install:
     - method: pip
       path: .
-      - pip install -r requirements.txt
+    - pip install -r requirements.txt  #  Correct way to install from requirements.txt
 
 sphinx:
   configuration: conf.py
