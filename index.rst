@@ -10,7 +10,7 @@ Main Script Documentation
 
 This section documents the main script functionality.
 
-.. automodule:: custom_py_package
+.. automodule:: custompackage
    :members:
    :undoc-members:
    :show-inheritance:
