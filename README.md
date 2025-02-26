@@ -4,4 +4,4 @@ A simple Python package for testing AWS CodeArtifact.
 
 ## Installation
 ```bash
-pip install custom_py_package
+pip install custompackage
