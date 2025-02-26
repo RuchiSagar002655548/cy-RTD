@@ -2,7 +2,7 @@ name: Rotate AWS Keys and Update RTD
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # Runs every 90 days
+    - cron: "*/5 * * * *"
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
