@@ -15,9 +15,9 @@ build:
 
 python:
   install:
+    - requirements: requirements.txt  # Install dependencies from requirements.txt
     - method: pip
       path: .
-    - pip install -r requirements.txt  #  Correct way to install from requirements.txt
 
 sphinx:
   configuration: conf.py
