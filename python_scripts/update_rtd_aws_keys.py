@@ -3,9 +3,6 @@ import json
 import os
 import boto3
 
-# List of RTD projects (For testing, we only have one project: "cy-rtd")
-RTD_PROJECTS = ["cy-rtd", "cy-rtd-org"]
-
 # RTD API Headers (Ensure `RTD_API_TOKEN` is set in GitHub Secrets)
 RTD_API_TOKEN = os.getenv("RTD_API_TOKEN")
 if not RTD_API_TOKEN:
@@ -27,30 +24,29 @@ def assume_aws_role():
         return None
 
 def fetch_new_aws_keys():
-    """Creates a new AWS Access Key & Secret for the codeartifact-rtd IAM user"""
+    """Creates a new AWS Access Key & Secret for the codeartifact-rtd IAM user, deleting the oldest key if needed."""
     try:
         aws_creds = assume_aws_role()
         if not aws_creds:
             print("AWS credential retrieval failed. Exiting.")
             return None
 
-        # Create an IAM client with the retrieved credentials
         iam = boto3.client("iam")
 
         # List all existing access keys
-        existing_keys = iam.list_access_keys(UserName="codeartifact-rtd")["AccessKeyMetadata"
-                                                                          ]
+        existing_keys = iam.list_access_keys(UserName="codeartifact-rtd")["AccessKeyMetadata"]
+
         # If 2 keys exist, delete the oldest one
         if len(existing_keys) >= 2:
-            oldest_key = sorted(existing_keys, key=lambda k: k["CreateDate"])[0]  # Find oldest key
+            oldest_key = sorted(existing_keys, key=lambda k: k["CreateDate"])[0]
             print(f"Deleting oldest AWS Access Key: {oldest_key['AccessKeyId']}...")
             iam.delete_access_key(UserName="codeartifact-rtd", AccessKeyId=oldest_key["AccessKeyId"])
             print(f"Successfully deleted old key: {oldest_key['AccessKeyId']}")
 
+        # Create a new access key
         print("Creating new AWS Access Key for codeartifact-rtd...")
         new_key = iam.create_access_key(UserName="codeartifact-rtd")["AccessKey"]
 
-        # Do not print the secret key for security reasons
         print(f"New AWS Access Key created: {new_key['AccessKeyId']} (SECRET HIDDEN)")
 
         return {
@@ -61,6 +57,22 @@ def fetch_new_aws_keys():
     except Exception as e:
         print(f"Failed to create AWS keys: {str(e)}")
         return None
+
+def get_all_rtd_projects():
+    """Fetches all RTD projects dynamically using RTD API"""
+    try:
+        url = "https://readthedocs.org/api/v3/projects/"
+        response = requests.get(url, headers=HEADERS)
+        
+        if response.status_code == 200:
+            projects = response.json()["results"]
+            return [project["slug"] for project in projects]  # Extract project slugs
+        else:
+            print(f"Failed to list RTD projects: {response.text}")
+            return []
+    except Exception as e:
+        print(f"Exception while fetching RTD projects: {str(e)}")
+        return []
 
 def list_env_variables(project):
     """Fetches all environment variables for a given RTD project"""
@@ -94,7 +106,7 @@ def delete_env_variable(project, var_id):
         return False
 
 def add_env_variable(project, name, value):
-    """Adds a new environment variable to RTD"""
+    """Adds or updates an environment variable in RTD"""
     try:
         url = f"https://readthedocs.org/api/v3/projects/{project}/environmentvariables/"
         data = {"name": name, "value": value}
@@ -111,28 +123,34 @@ def add_env_variable(project, name, value):
         return False
 
 def update_rtd_aws_keys():
-    """Deletes old AWS keys and updates RTD with new ones"""
+    """Deletes old AWS keys and updates RTD environment variables for all projects."""
     print("Fetching new AWS credentials from IAM...")
     aws_keys = fetch_new_aws_keys()
     if not aws_keys:
         print("AWS key creation failed. Exiting.")
         return
 
+    # Dynamically get all RTD projects
+    RTD_PROJECTS = get_all_rtd_projects()
+    if not RTD_PROJECTS:
+        print("No RTD projects found. Exiting.")
+        return
+
     for project in RTD_PROJECTS:
         print(f"Listing current environment variables for {project}...")
         existing_vars = list_env_variables(project)
         
-        # Check if response is valid before proceeding
         if not existing_vars or "results" not in existing_vars:
             print(f"Skipping {project} due to API error.")
             continue
 
         existing_var_names = {var["name"]: var["pk"] for var in existing_vars["results"]}
 
-        # Ensure all necessary AWS keys exist
         for name, value in aws_keys.items():
             if name in existing_var_names:
-                print(f"{name} already exists in {project}, skipping creation.")
+                print(f"{name} exists in {project}, updating value...")
+                delete_env_variable(project, existing_var_names[name])
+                add_env_variable(project, name, value)
             else:
                 print(f"Adding missing variable {name} to {project}...")
                 add_env_variable(project, name, value)
